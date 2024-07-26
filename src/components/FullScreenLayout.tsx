@@ -1,16 +1,17 @@
-'use client'
+'use client';
 
 import React from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { ChatAssistant } from './ChatAssistant';
-import { useAssets } from '@/contexts/AssetContext';
+import { AssetProvider, useAssets } from '@/contexts/AssetContext';
+import { UserProvider } from '@/contexts/UserContext';
 
 interface FullScreenLayoutProps {
   children: React.ReactNode;
 }
 
-const FullScreenLayout: React.FC<FullScreenLayoutProps> = ({ children }) => {
+const FullScreenLayoutContent: React.FC<FullScreenLayoutProps> = ({ children }) => {
   const { assets, selectedAsset, setSelectedAsset } = useAssets();
 
   return (
@@ -26,6 +27,16 @@ const FullScreenLayout: React.FC<FullScreenLayoutProps> = ({ children }) => {
       </div>
       <ChatAssistant />
     </div>
+  );
+};
+
+const FullScreenLayout: React.FC<FullScreenLayoutProps> = ({ children }) => {
+  return (
+    <UserProvider>
+      <AssetProvider>
+        <FullScreenLayoutContent>{children}</FullScreenLayoutContent>
+      </AssetProvider>
+    </UserProvider>
   );
 };
 
